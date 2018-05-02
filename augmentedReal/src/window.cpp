@@ -1,7 +1,7 @@
 #include "window.hpp"
+
 Window::Window(){
 	
-	noFrame = false;	
 
 	initializeGLFW();
 	
@@ -141,10 +141,10 @@ void Window::initializeShaders(const char* vertexPath, const char* fragmentPath)
 bool Window::shouldTerminate(){
 	return !glfwWindowShouldClose(window);
 }
-void detectCodes(){
+void Window::detectCodes(){
 	Ptr<Dictionary> dictionary = getPredefinedDictionary(PREDEFINED_DICTIONARY_NAME::DICT_4X4_50);
-	vector<int> markerIds;
-	vector<vector<Point2f> markerCorners, rejectedCandidates;
+	std::vector<int> markerIds;
+	std::vector<std::vector<Point2f>> markerCorners, rejectedCandidates;
 	DetectorParameters parameters; 
 	detectMarkers(frame, dictionary, markerCorners, markerIds, parameters, rejectedCandidates);
 	

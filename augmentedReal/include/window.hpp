@@ -13,7 +13,7 @@
 #include <shaders/shader.hpp>
 
 #include <iostream>
-
+#include <vector>
 using namespace cv;
 using namespace aruco;
 
