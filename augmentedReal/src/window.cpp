@@ -139,14 +139,28 @@ void Window::initializeShaders(const char* vertexPath, const char* fragmentPath)
 	ourShader.initShaders(vertexPath, fragmentPath);
 }
 bool Window::shouldTerminate(){
-	return !glfwWindowShouldClose(window) || !noFrame;
+	return !glfwWindowShouldClose(window);
+}
+void detectCodes(){
+	Ptr<Dictionary> dictionary = getPredefinedDictionary(PREDEFINED_DICTIONARY_NAME::DICT_4X4_50);
+	vector<int> markerIds;
+	vector<vector<Point2f> markerCorners, rejectedCandidates;
+	DetectorParameters parameters; 
+	detectMarkers(frame, dictionary, markerCorners, markerIds, parameters, rejectedCandidates);
+	
+	for(auto row : markerCorners){
+		for(auto col : row){
+			std::cout << col.x << " " << col.y << std::endl;
+		}
+	}
 }
 void Window::readUpdateFrame(){
 	if(!capture.read(frame)){
-		noFrame = true;
 		return;
 	}
 	
+	detectCodes();
+		
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, frame.cols, frame.rows, 0, GL_RGB, GL_UNSIGNED_BYTE, frame.ptr());
 
 	glGenerateMipmap(GL_TEXTURE_2D);

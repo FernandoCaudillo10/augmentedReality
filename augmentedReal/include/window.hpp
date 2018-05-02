@@ -4,6 +4,7 @@
 #include "opencv2/imgproc/imgproc.hpp"
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/opencv.hpp"
+#include <opencv2/aruco.hpp>
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -13,6 +14,9 @@
 
 #include <iostream>
 
+using namespace cv;
+using namespace aruco;
+
 class Window{
 	
 	private:
@@ -21,7 +25,6 @@ class Window{
 		GLFWwindow *window;
 		cv::VideoCapture capture;
 		cv::Mat frame;
-		bool noFrame;
 		unsigned int texture1;
 		unsigned int VBO, VAO, EBO;
     	Shader ourShader;
@@ -40,6 +43,7 @@ class Window{
 		void processInput();
 		void readUpdateFrame();
 		void render();
+		void detectCodes();
 		void poll();
 		
 		void terminate();
