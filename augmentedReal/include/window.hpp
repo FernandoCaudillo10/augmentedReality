@@ -10,40 +10,41 @@
 #include <GLFW/glfw3.h>
 #include <stb/stb_image.h>
 
-#include <shaders/shader.hpp>
+#include "texture.h"
 
 #include <iostream>
 #include <vector>
-using namespace cv;
-using namespace aruco;
+
 
 class Window{
 	
 	private:
-		const unsigned int SCR_WIDTH = 800;
-		const unsigned int SCR_HEIGHT = 600;
+		const unsigned int SCR_WIDTH = 1600;
+		const unsigned int SCR_HEIGHT = 1200;
 		GLFWwindow *window;
 		cv::VideoCapture capture;
-		cv::Mat frame;
-		unsigned int texture1;
+		Texture frameTex;
+		Texture graphic;
+    	Shader shader;
 		unsigned int VBO, VAO, EBO;
-    	Shader ourShader;
+		float vertices[32]; 		
+		unsigned int indices[6]; 	
 	public:
 		Window();
 
 		void initializeGLFW();
 		void createWindow();
-		void initializeShaders(const char* vertexPath, const char* fragmentPath);
 		void initializeGLADpointers();
 		
-		void configureBuffers();
-		void configureTextures();
-		void configureShaders();
-		
+		void configureShader();
+		void initializeShader(const char* vertexPath, const char* fragmentPath);
+		void configureBuffer();
+		void renderHelper();
 		void processInput();
 		void readUpdateFrame();
+		void updateGraphic();
 		void render();
-		void detectCodes();
+		//void detectCodes();
 		void poll();
 		
 		void terminate();
