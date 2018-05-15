@@ -26,9 +26,13 @@ class Window{
 		Texture frameTex;
 		Texture graphic;
     	Shader shader;
+		Shader shader2;
 		unsigned int VBO, VAO, EBO;
+		unsigned int VBO2, VAO2;
 		float vertices[32]; 		
+		float vertices2[32]; 		
 		unsigned int indices[6]; 	
+		bool first;		
 	public:
 		Window();
 
@@ -37,6 +41,7 @@ class Window{
 		void initializeGLADpointers();
 		
 		void configureShader();
+		void initializeShader2(const char* vertexPath, const char* fragmentPath);
 		void initializeShader(const char* vertexPath, const char* fragmentPath);
 		void configureBuffer();
 		void renderHelper();

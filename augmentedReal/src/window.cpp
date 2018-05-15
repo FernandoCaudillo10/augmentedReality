@@ -1,7 +1,7 @@
 #include "window.hpp"
 
 Window::Window(){
-
+	first = false;
 	float tempvert[32] = {
 			// positions          // colors           // texture coords
 			 1.0f,  1.0f, 0.0f,   1.0f, 1.0f, 1.0f,   1.0f, 1.0f, // top right
@@ -11,6 +11,16 @@ Window::Window(){
 		};
 	
 	std::copy(std::begin(tempvert), std::end(tempvert), std::begin(vertices));
+	
+	float tempvert2[32] = {
+			// positions          // colors           // texture coords
+			  0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 1.0f,   1.0f, 1.0f, // top right
+			  0.5f, -0.5f, 0.0f,   1.0f, 1.0f, 1.0f,   1.0f, 0.0f, // bottom right
+			 -0.5f, -0.5f, 0.0f,   1.0f, 1.0f, 1.0f,   0.0f, 0.0f, // bottom left
+			 -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 1.0f,   0.0f, 1.0f  // top left 
+		};
+	
+	std::copy(std::begin(tempvert2), std::end(tempvert2), std::begin(vertices2));
 	
 	unsigned int tempin[6] = {
 			0, 1, 3, // first triangle
@@ -25,17 +35,10 @@ Window::Window(){
 	initializeGLADpointers();
 	
 	initializeShader("include/shaders/vertexShader.vs", "include/shaders/fragmentShader.fs");           
+	initializeShader2("include/shaders/vertexShader.vs", "include/shaders/fragmentShaderGraphic.fs");           
 	
 	configureBuffer();
 		
-	graphic.setID(1);
-	graphic.setName("graphic");
-	graphic.configureTexture();
-
-	//stbi_set_flip_vertically_on_load(true);
-	graphic.setImage("/home/leeon/augmentedReality/augmentedReal/smile.png");
-
-	updateGraphic();
 
 	frameTex.setID(0);
 	frameTex.setName("texture1");	
@@ -46,6 +49,14 @@ Window::Window(){
 
 	readUpdateFrame();
 	
+	graphic.setID(0);
+	graphic.setName("graphic");
+	graphic.configureTexture();
+
+	stbi_set_flip_vertically_on_load(true);
+	graphic.setImage("/home/leeon/augmentedReality/augmentedReal/smile.png");
+
+	updateGraphic();
 	configureShader();
 }
 void Window::processInput()
@@ -60,23 +71,28 @@ void Window::framebuffer_size_callback(GLFWwindow* window, int width, int height
 }
 void Window::configureShader(){	
     shader.use(); 
-	shader.setInt(graphic.getName(), graphic.getTexID());
     shader.setInt(frameTex.getName(), frameTex.getTexID());
+	shader2.use();
+	shader2.setInt(graphic.getName(), graphic.getTexID());
 }
-
 void Window::initializeShader(const char* vertexPath, const char* fragmentPath){
 	shader.initShaders(vertexPath, fragmentPath);
 }
+void Window::initializeShader2(const char* vertexPath, const char* fragmentPath){
+	shader2.initShaders(vertexPath, fragmentPath);
+}
 void Window::configureBuffer(){
-    
+	shader.use();    
 	glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
+	glGenBuffers(1, &VBO2);
     glGenBuffers(1, &EBO);
 
     glBindVertexArray(VAO);
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
@@ -90,6 +106,30 @@ void Window::configureBuffer(){
     // texture coord attribute
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
     glEnableVertexAttribArray(2);
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	
+	shader2.use();
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glGenVertexArrays(1, &VAO2);
+	glBindVertexArray(VAO2);
+
+    glBindBuffer(GL_ARRAY_BUFFER, VBO2);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices2), vertices2, GL_STATIC_DRAW);
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+    // position attribute
+  	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+    // color attribute
+  	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
+    // texture coord attribute
+  	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+    glEnableVertexAttribArray(2);
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 }
 
@@ -136,7 +176,7 @@ void Window::render(){
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
 	//read from camera and update the texture
-	readUpdateFrame();
+	//readUpdateFrame();
 	
 	//redraw graphic at new position
 	//updateGraphic(); 
@@ -174,10 +214,13 @@ bool Window::shouldTerminate(){
 //		}
 //	}
 void Window::readUpdateFrame(){
+	glActiveTexture(GL_TEXTURE0);	
+	glBindTexture(GL_TEXTURE_2D, frameTex.getTexture());
 	cv::Mat temp;
 	if(!capture.read(temp)){
 		return;
 	}
+	cv::flip(temp,temp, +1);
 	frameTex.setImage(temp);
 	//detectCodes();
 	
@@ -186,21 +229,26 @@ void Window::readUpdateFrame(){
 		
 }
 void Window::updateGraphic(){
+	glActiveTexture(GL_TEXTURE0);	
+	glBindTexture(GL_TEXTURE_2D, graphic.getTexture()); 
 	graphic.renderTexbyIm();	
 }
 void Window::renderHelper(){
 	
-	glActiveTexture(GL_TEXTURE1);
+	shader.use();
+
+	glBindVertexArray(VAO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	
-	glBindTexture(GL_TEXTURE_2D, graphic.getTexture()); 
+	readUpdateFrame();
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	
+	shader2.use();
+		
+	glBindVertexArray(VAO2);	
+    glBindBuffer(GL_ARRAY_BUFFER, VBO2);
 	
 	glActiveTexture(GL_TEXTURE0);	
-		
-	glBindTexture(GL_TEXTURE_2D, frameTex.getTexture());
-
-	
-	shader.use();
-	glBindVertexArray(VAO);
+	glBindTexture(GL_TEXTURE_2D, graphic.getTexture()); 
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-
 }

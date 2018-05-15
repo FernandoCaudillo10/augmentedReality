@@ -25,7 +25,6 @@ class Texture{
 		void setImage(const char* path);
 		void setID(int id) { this->textureID = id; }
 		void setName(const char* name) {this->name = name;}
-		
 	private:
 		unsigned int texture;
 		unsigned int textureID;
