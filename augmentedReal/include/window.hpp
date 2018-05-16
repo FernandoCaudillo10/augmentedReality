@@ -6,11 +6,11 @@
 #include "opencv2/opencv.hpp"
 #include <opencv2/aruco.hpp>
 
+#include "texture.h"
+
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include <stb/stb_image.h>
 
-#include "texture.h"
 
 #include <iostream>
 #include <vector>
@@ -23,16 +23,10 @@ class Window{
 		const unsigned int SCR_HEIGHT = 1200;
 		GLFWwindow *window;
 		cv::VideoCapture capture;
+		
 		Texture frameTex;
 		Texture graphic;
-    	Shader shader;
-		Shader shader2;
-		unsigned int VBO, VAO, EBO;
-		unsigned int VBO2, VAO2;
-		float vertices[32]; 		
-		float vertices2[32]; 		
-		unsigned int indices[6]; 	
-		bool first;		
+
 	public:
 		Window();
 
@@ -40,10 +34,6 @@ class Window{
 		void createWindow();
 		void initializeGLADpointers();
 		
-		void configureShader();
-		void initializeShader2(const char* vertexPath, const char* fragmentPath);
-		void initializeShader(const char* vertexPath, const char* fragmentPath);
-		void configureBuffer();
 		void renderHelper();
 		void processInput();
 		void readUpdateFrame();

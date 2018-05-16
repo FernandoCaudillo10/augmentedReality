@@ -3,7 +3,7 @@
 int main(){
 
 	Window window;
-	
+		
     while (window.shouldTerminate()){
 
         window.processInput();

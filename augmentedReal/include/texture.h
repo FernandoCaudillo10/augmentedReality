@@ -7,7 +7,6 @@
 #include <opencv2/aruco.hpp>
 #include <shaders/shader.hpp>
 
-#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <stb/stb_image.h>
 
@@ -19,18 +18,30 @@ class Texture{
 		void renderTexbyMat();
 		void renderTexbyIm();
 		unsigned int getTexture() const {return texture; }
-		const char *getName() const {return name; }
-		unsigned int getTexID() const {return textureID; }
 		void setImage(cv::Mat image);
 		void setImage(const char* path);
-		void setID(int id) { this->textureID = id; }
-		void setName(const char* name) {this->name = name;}
+		void setasBackground();
+		void setasGraphic();
+		void bind();
+    	Shader shader;
+		void setVertices(float vertices[]);
+		void setIndices(unsigned int indices[]);
+		void updateCoordinate(float coord[12]);
+		void draw();
+		void render();
+		void setBuffers();
+		void release();
 	private:
+		unsigned int VBO, VAO, EBO;
+		float vertices[32]; 		
+		unsigned int indices[6]; 	
+		
 		unsigned int texture;
-		unsigned int textureID;
+	
+		bool isBackground;
+
 		int width, height, nrChannels;
 		unsigned char *imageData;
-		const char *name;
 		cv::Mat image;
 };
 
