@@ -7,7 +7,8 @@ in vec2 TexCoord;
 uniform sampler2D graphic;
 
 void main(){
-	vec4 graphicA = texture(graphic, TexCoord);
-	graphicA.a = 0.5;
-	FragColor = graphicA;
+	FragColor = texture(graphic, TexCoord);
+//	vec4 graphicA = texture(graphic, TexCoord);
+//	graphicA.a = 0.5;
+//	FragColor = graphicA;
 }

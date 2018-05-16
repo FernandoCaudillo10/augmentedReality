@@ -42,7 +42,7 @@ Window::Window(){
 
 	readUpdateFrame();
 	
-	graphic.setImage("/home/leeon/augmentedReality/augmentedReal/smile.png");
+	graphic.setImage("/home/leeon/augmentedReality/augmentedReal/chess.png");
 
 	updateGraphic();
 }
