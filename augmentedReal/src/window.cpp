@@ -37,7 +37,7 @@ Window::Window(){
 	graphic.setIndices(tempin);
 	graphic.setBuffers();		
 		
-	capture.open("testMovie.mp4");
+	capture.open("chessVideo.mp4");
 	//capture.open(0); //UNCOMMENT to test camera and comment above ^^
 
 	readUpdateFrame();
@@ -125,7 +125,7 @@ void Window::readUpdateFrame(){
 	if(!capture.read(temp)){
 		return;
 	}
-	cv::flip(temp,temp, +1);
+	//cv::flip(temp,temp, +1);
 
 	frameTex.setImage(temp);
 	//detectCodes();
