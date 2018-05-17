@@ -31,6 +31,7 @@ class Texture{
 		void render();
 		void setBuffers();
 		void release();
+		void setTexCoordinate(float coord[8]);
 	private:
 		unsigned int VBO, VAO, EBO;
 		float vertices[32]; 		
