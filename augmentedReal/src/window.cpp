@@ -105,6 +105,24 @@ void Window::terminate(){
 bool Window::shouldTerminate(){
 	return !glfwWindowShouldClose(window);
 }
+<<<<<<< HEAD
+void Window::detectCodes(){
+/*
+	Ptr<Dictionary> dictionary = getPredefinedDictionary(PREDEFINED_DICTIONARY_NAME::DICT_4X4_50);
+	std::vector<int> markerIds;
+	std::vector<std::vector<Point2f>> markerCorners, rejectedCandidates;
+	DetectorParameters parameters; 
+	detectMarkers(frame, dictionary, markerCorners, markerIds, parameters, rejectedCandidates);
+	
+	for(auto row : markerCorners){
+		for(auto col : row){
+			std::cout << col.x << " " << col.y << std::endl;
+		}
+	}
+*/;
+}
+=======
+>>>>>>> 7985e4b61cd075bfdb5903950c3449cc397a66cc
 void Window::readUpdateFrame(){
 	
 	frameTex.bind();
