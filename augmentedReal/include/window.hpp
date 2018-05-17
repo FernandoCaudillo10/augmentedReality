@@ -10,7 +10,7 @@
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-
+#include <ChessPiece.h>
 
 #include <iostream>
 #include <vector>
@@ -19,14 +19,13 @@
 class Window{
 	
 	private:
-		const unsigned int SCR_WIDTH = 1600;
-		const unsigned int SCR_HEIGHT = 1200;
+		const unsigned int SCR_WIDTH = 800;
+		const unsigned int SCR_HEIGHT = 600;
 		GLFWwindow *window;
 		cv::VideoCapture capture;
 		
 		Texture frameTex;
-		Texture graphic;
-
+		std::vector <ChessPiece> pieces;
 	public:
 		Window();
 
@@ -37,7 +36,6 @@ class Window{
 		void renderHelper();
 		void processInput();
 		void readUpdateFrame();
-		void updateGraphic();
 		void render();
 		//void detectCodes();
 		void poll();

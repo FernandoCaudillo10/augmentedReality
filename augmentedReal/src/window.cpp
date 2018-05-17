@@ -8,18 +8,11 @@ Window::Window(){
 			 -1.0f,  -1.0f, 0.0f,   1.0f, 1.0f, 1.0f,   0.0f, 0.0f, // bottom left
 			 -1.0f,  1.0f, 0.0f,   1.0f, 1.0f, 1.0f,   0.0f, 1.0f  // top left 
 		};
-	float tempvert2[32] = {
-			// positions          // colors           // texture coords
-			  0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 1.0f,   1.0f, 1.0f, // top right
-			  0.5f, -0.5f, 0.0f,   1.0f, 1.0f, 1.0f,   1.0f, 0.0f, // bottom right
-			 -0.5f, -0.5f, 0.0f,   1.0f, 1.0f, 1.0f,   0.0f, 0.0f, // bottom left
-			 -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 1.0f,   0.0f, 1.0f  // top left 
-		};
 	unsigned int tempin[6] = {
 			0, 1, 3, // first triangle
 			1, 2, 3  // second triangle
-		};
-	
+		};	
+
 	initializeGLFW();
 	
 	createWindow();
@@ -27,24 +20,20 @@ Window::Window(){
 	initializeGLADpointers();
 	
 	frameTex.setasBackground();
-	graphic.setasGraphic();	
 		
 	frameTex.setVertices(tempvert);
 	frameTex.setIndices(tempin);
 	frameTex.setBuffers();
-	
-	graphic.setVertices(tempvert2);
-	graphic.setIndices(tempin);
-	graphic.setBuffers();		
+
+	for (unsigned int i=0; i<2; ++i) {
+		ChessPiece temp;
+		pieces.push_back(temp);
+	}	
 		
 	capture.open("chessVideo.mp4");
 	//capture.open(0); //UNCOMMENT to test camera and comment above ^^
 
 	readUpdateFrame();
-	
-	graphic.setImage("/home/leeon/augmentedReality/augmentedReal/chess.png");
-
-	updateGraphic();
 }
 void Window::processInput()
 {
@@ -110,7 +99,6 @@ void Window::poll(){
 void Window::terminate(){
 
 	frameTex.release();
-	graphic.release();		
 
     glfwTerminate();
 }
@@ -134,17 +122,12 @@ void Window::readUpdateFrame(){
 	frameTex.renderTexbyMat();
 		
 }
-void Window::updateGraphic(){
-	graphic.bind();
-	graphic.renderTexbyIm();	
-}
 void Window::renderHelper(){
 	
 	frameTex.render();	
 	readUpdateFrame();
 	frameTex.draw();
 	
-	graphic.render();
 	float coord[12] = {
 			// positions (x,y,z)
 			 0.8f,  0.8f, 0.0f,  // top right
@@ -152,6 +135,6 @@ void Window::renderHelper(){
 			 -0.5f,  -0.5f, 0.0f, // bottom left
 			 -0.5f,  0.8f, 0.0f,  // top left 
 	};
-	graphic.updateCoordinate(coord);
-	graphic.draw();
+	for (auto& graphic : pieces)
+		graphic.renderWithCoord(coord);
 }
