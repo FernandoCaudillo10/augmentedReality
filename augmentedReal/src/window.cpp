@@ -19,16 +19,17 @@ Window::Window(){
 
 	initializeGLADpointers();
 	
+	for (unsigned int i=0; i<2; ++i) {
+		ChessPiece temp;
+		pieces.push_back(temp);
+	}	
+
 	frameTex.setasBackground();
 		
 	frameTex.setVertices(tempvert);
 	frameTex.setIndices(tempin);
 	frameTex.setBuffers();
 
-	for (unsigned int i=0; i<2; ++i) {
-		ChessPiece temp;
-		pieces.push_back(temp);
-	}	
 		
 	capture.open("chessVideo.mp4");
 	//capture.open(0); //UNCOMMENT to test camera and comment above ^^
@@ -105,8 +106,7 @@ void Window::terminate(){
 bool Window::shouldTerminate(){
 	return !glfwWindowShouldClose(window);
 }
-<<<<<<< HEAD
-void Window::detectCodes(){
+//void Window::detectCodes(){
 /*
 	Ptr<Dictionary> dictionary = getPredefinedDictionary(PREDEFINED_DICTIONARY_NAME::DICT_4X4_50);
 	std::vector<int> markerIds;
@@ -119,10 +119,8 @@ void Window::detectCodes(){
 			std::cout << col.x << " " << col.y << std::endl;
 		}
 	}
-*/;
-}
-=======
->>>>>>> 7985e4b61cd075bfdb5903950c3449cc397a66cc
+;*/
+//}
 void Window::readUpdateFrame(){
 	
 	frameTex.bind();
@@ -148,11 +146,18 @@ void Window::renderHelper(){
 	
 	float coord[12] = {
 			// positions (x,y,z)
-			 0.8f,  0.8f, 0.0f,  // top right
-			 0.8f,  -0.5f, 0.0f,  // bottom right
-			 -0.5f,  -0.5f, 0.0f, // bottom left
-			 -0.5f,  0.8f, 0.0f,  // top left 
+			 0.0f,  0.0f, 0.0f,  // top right
+			 0.0f,  -1.0f, 0.0f,  // bottom right
+			 -1.0f,  -1.0f, 0.0f, // bottom left
+			 -1.0f,  0.0f, 0.0f,  // top left 
 	};
-	for (auto& graphic : pieces)
-		graphic.renderWithCoord(coord);
+	float coord2[12] = {
+			// positions (x,y,z)
+			 1.0f,  1.0f, 0.0f,  // top right
+			 1.0f,  -0.0f, 0.0f,  // bottom right
+			 -0.0f,  -0.0f, 0.0f, // bottom left
+			 -0.0f,  1.0f, 0.0f,  // top left 
+	};
+	pieces[0].renderWithCoord(coord);
+	pieces[1].renderWithCoord(coord2);
 }
