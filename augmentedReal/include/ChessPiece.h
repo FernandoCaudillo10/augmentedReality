@@ -7,9 +7,10 @@ class ChessPiece {
 	public:
 		ChessPiece();
 		void renderWithCoord(float coord[12]);
-		void setCodeId(int id){code_id = id;}
+		void setType(int id);
 		int getCodeId(){return code_id;}
 	private:
+		static const std::vector<std::string> paths;
 		Texture pieceTex;
 		float scr_coord[12];
 		float tex_coord[8];

@@ -19,9 +19,9 @@ Window::Window(){
 
 	initializeGLADpointers();
 	
-	for (unsigned int i=0; i<2; ++i) {
+	for (unsigned int i=0; i<12; ++i) {
 		ChessPiece temp;
-		temp.setCodeId(i);
+		temp.setType(i);
 		pieces.push_back(temp);
 	}	
 
@@ -32,7 +32,7 @@ Window::Window(){
 	frameTex.setBuffers();
 
 		
-	capture.open("chessVideo.mp4");
+	capture.open("../../Desktop/board.mp4");
 	//capture.open(0); //UNCOMMENT to test camera and comment above ^^
 
 	readUpdateFrame();

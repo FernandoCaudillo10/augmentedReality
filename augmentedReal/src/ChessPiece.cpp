@@ -1,6 +1,20 @@
 #include <ChessPiece.h>
 
 unsigned short ChessPiece::id_num = 0;
+const std::vector<std::string> ChessPiece::paths({
+	"media/towerBlack.jpg",
+	"media/horseBlack.jpg",
+	"media/bishopBlack.jpg",
+	"media/kingBlack.jpg",
+	"media/queenBlack.jpg",
+	"media/pawnBlack.jpg",
+	"media/towerWhite.jpg",
+	"media/horseWhite.jpg",
+	"media/bishopWhite.jpg",
+	"media/kingWhite.jpg",
+	"media/queenWhite.jpg",
+	"media/pawnWhite.jpg",
+	});
 
 ChessPiece::ChessPiece() {
 	code_id = id_num++;
@@ -12,10 +26,10 @@ ChessPiece::ChessPiece() {
                          -0.5f, -0.5f, 0.0f,   1.0f, 1.0f, 1.0f,   0.0f, 0.0f, // bottom left
                          -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 1.0f,   0.0f, 1.0f  // top left 
                 };
-        unsigned int tempin[6] = {
-                        0, 1, 3, // first triangle
-                        1, 2, 3  // second triangle
-                };
+	unsigned int tempin[6] = {
+					0, 1, 3, // first triangle
+					1, 2, 3  // second triangle
+			};
 	float tempfl[8] = {
 			1.0f, 1.0f,
 			1.0f, 0.0f,
@@ -43,4 +57,12 @@ void ChessPiece::renderWithCoord(float coord[12]) {
 	
 	pieceTex.updateCoordinate(scr_coord);
 	pieceTex.draw();
+}
+void ChessPiece::setType(int id){
+	code_id = id;
+	
+	pieceTex.setImage(paths[id].c_str());
+	pieceTex.bind();
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	pieceTex.renderTexbyIm();
 }
