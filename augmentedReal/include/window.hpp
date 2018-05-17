@@ -36,6 +36,8 @@ class Window{
 		void initializeGLADpointers();
 		
 		void renderHelper();
+		void renderGraphic(std::vector<std::vector<float>> &code, ChessPiece &piece);
+		void detectHelper(std::vector<std::vector<std::vector<float>>> &codes, std::vector<int> &ids);
 		void processInput();
 		void readUpdateFrame();
 		void render();

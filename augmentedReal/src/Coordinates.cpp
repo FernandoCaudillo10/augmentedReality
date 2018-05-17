@@ -45,6 +45,9 @@ vector<vector<vector<float>>> Coordinates::normalizedCoordinates(){
 	for(int i=0; i<point2fMarkerCorners.size(); i++){
 
 		vector<vector<float>> m;
+		vector<float> temp;
+		temp.push_back((float) markerIds[i]);
+		m.push_back(temp);
 
 		for(int j=0; j<point2fMarkerCorners[0].size(); j++){
 			vector<float> xAndY(2);

@@ -30,7 +30,7 @@ ChessPiece::ChessPiece() {
 	pieceTex.setIndices(tempin);
 	pieceTex.setBuffers();
 
-	pieceTex.setImage("chess.png");
+	pieceTex.setImage("smile.png");
 	pieceTex.bind();
 	pieceTex.renderTexbyIm();
 }

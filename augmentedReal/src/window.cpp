@@ -107,27 +107,54 @@ void Window::terminate(){
 bool Window::shouldTerminate(){
 	return !glfwWindowShouldClose(window);
 }
-void Window::detectCodes(){
-	std::vector<std::vector<std::vector<float>>> temporary_vector;
-	temporary_vector = coordinate.getCoordinates(frameTex.getMat());
-	std::vector<int> temporary;
-	temporary = coordinate.getMarkerIds();
-	for (auto& elem : temporary) {
-		for (auto& piece : pieces) {
-			if (piece.getCodeId() == elem){
-				float coord[12];
-				int i=0;
-				for(auto c : temporary_vector[elem]){
-					coord[i] = c[0];
-					coord[i+1] = c[1];
-					coord[i+2] = 0;	
-					i += 3;
-				}
-				piece.renderWithCoord(coord);
-				break;
+void Window::renderGraphic(std::vector<std::vector<float>> &code, ChessPiece &piece){
+	float coord[12];
+	
+	int i=0;	
+	for(auto att : code){
+		if(i == 12)
+			break;
+		if(att.size() == 1)
+			continue;
+		coord[i] = att[0];
+		coord[i+1] = att[1];
+		coord[i+2] = 0.0f;
+		i += 3;	
+	}
+		
+	piece.renderWithCoord(coord);
+}
+void Window::detectHelper(std::vector<std::vector<std::vector<float>>> &codes, std::vector<int> &ids){
+
+	for (auto& piece : pieces) {
+		for(auto& code : codes){
+			if (piece.getCodeId() == code[0][0]){
+				renderGraphic(code, piece);
 			}
 		}
 	}
+}
+void Window::detectCodes(){
+	std::vector<std::vector<std::vector<float>>> temporary_vector;
+	temporary_vector = coordinate.getCoordinates(frameTex.getMat());
+
+//	for(auto code : temporary_vector){
+//		std::cout << "[";
+//		for(auto point : code){
+//			std::cout << "[";
+//			for(auto elem : point){
+//				std::cout << elem << ", ";
+//			}
+//			std::cout << "]\n";
+//		}
+//		std::cout << "]\n";
+//	}
+
+	std::vector<int> temporary;
+	temporary = coordinate.getMarkerIds();
+
+	
+	detectHelper(temporary_vector, temporary);	
 }
 void Window::readUpdateFrame(){
 	
