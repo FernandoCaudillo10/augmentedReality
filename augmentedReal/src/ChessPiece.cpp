@@ -1,6 +1,10 @@
 #include <ChessPiece.h>
 
+unsigned short ChessPiece::id_num = 0;
+
 ChessPiece::ChessPiece() {
+	code_id = id_num++;
+
 	float tempvert[32] = {
                         // positions          // colors           // texture coords
                           0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 1.0f,   1.0f, 1.0f, // top right

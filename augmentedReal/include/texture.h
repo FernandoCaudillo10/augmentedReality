@@ -23,7 +23,7 @@ class Texture{
 		void setasBackground();
 		void setasGraphic();
 		void bind();
-    	Shader shader;
+	    	Shader shader;
 		void setVertices(float vertices[]);
 		void setIndices(unsigned int indices[]);
 		void updateCoordinate(float coord[12]);
@@ -32,6 +32,7 @@ class Texture{
 		void setBuffers();
 		void release();
 		void setTexCoordinate(float coord[8]);
+		cv::Mat getMat()const {return image;}
 	private:
 		unsigned int VBO, VAO, EBO;
 		float vertices[32]; 		

@@ -11,6 +11,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <ChessPiece.h>
+#include <Coordinates.hpp>
 
 #include <iostream>
 #include <vector>
@@ -26,6 +27,7 @@ class Window{
 		
 		Texture frameTex;
 		std::vector <ChessPiece> pieces;
+		Coordinates coordinate;
 	public:
 		Window();
 

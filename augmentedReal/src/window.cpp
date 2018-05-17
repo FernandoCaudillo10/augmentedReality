@@ -21,6 +21,7 @@ Window::Window(){
 	
 	for (unsigned int i=0; i<2; ++i) {
 		ChessPiece temp;
+		temp.setCodeId(i);
 		pieces.push_back(temp);
 	}	
 
@@ -107,6 +108,26 @@ bool Window::shouldTerminate(){
 	return !glfwWindowShouldClose(window);
 }
 void Window::detectCodes(){
+	std::vector<std::vector<std::vector<float>>> temporary_vector;
+	temporary_vector = coordinate.getCoordinates(frameTex.getMat());
+	std::vector<int> temporary;
+	temporary = coordinate.getMarkerIds();
+	for (auto& elem : temporary) {
+		for (auto& piece : pieces) {
+			if (piece.getCodeId() == elem){
+				float coord[12];
+				int i=0;
+				for(auto c : temporary_vector[elem]){
+					coord[i] = c[0];
+					coord[i+1] = c[1];
+					coord[i+2] = 0;	
+					i += 3;
+				}
+				piece.renderWithCoord(coord);
+				break;
+			}
+		}
+	}
 }
 void Window::readUpdateFrame(){
 	
@@ -121,7 +142,6 @@ void Window::readUpdateFrame(){
 
 	
 	frameTex.setImage(temp);
-	detectCodes();
 	
 	//create texture from Mat object 	
 	frameTex.renderTexbyMat();
@@ -133,20 +153,5 @@ void Window::renderHelper(){
 	readUpdateFrame();
 	frameTex.draw();
 	
-	float coord[12] = {
-			// positions (x,y,z)
-			 0.0f,  0.0f, 0.0f,  // top right
-			 0.0f,  -1.0f, 0.0f,  // bottom right
-			 -1.0f,  -1.0f, 0.0f, // bottom left
-			 -1.0f,  0.0f, 0.0f,  // top left 
-	};
-	float coord2[12] = {
-			// positions (x,y,z)
-			 1.0f,  1.0f, 0.0f,  // top right
-			 1.0f,  -0.0f, 0.0f,  // bottom right
-			 -0.0f,  -0.0f, 0.0f, // bottom left
-			 -0.0f,  1.0f, 0.0f,  // top left 
-	};
-	pieces[0].renderWithCoord(coord);
-	pieces[1].renderWithCoord(coord2);
+	detectCodes();
 }
