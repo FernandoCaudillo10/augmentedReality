@@ -37,7 +37,7 @@ class Window{
 		void processInput();
 		void readUpdateFrame();
 		void render();
-		//void detectCodes();
+		void detectCodes();
 		void poll();
 		
 		void terminate();
