@@ -32,8 +32,8 @@ Window::Window(){
 	frameTex.setBuffers();
 
 		
-	capture.open("../../Desktop/board.mp4");
-	//capture.open(0); //UNCOMMENT to test camera and comment above ^^
+	//capture.open("../../Desktop/board.mp4");
+	capture.open(0); //UNCOMMENT to test camera and comment above ^^
 
 	readUpdateFrame();
 }
@@ -165,7 +165,7 @@ void Window::readUpdateFrame(){
 		return;
 	}
 	//cv::flip(temp,temp, +1);
-	cv::rotate(temp,temp, cv::ROTATE_90_COUNTERCLOCKWISE);	
+	cv::rotate(temp,temp, cv::ROTATE_180);	
 
 	
 	frameTex.setImage(temp);

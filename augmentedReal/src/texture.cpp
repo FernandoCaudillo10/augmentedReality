@@ -17,7 +17,7 @@ void Texture::configureTexture(){
 }
 
 void Texture::renderTexbyMat(){
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, image.cols, image.rows, 0, GL_RGB, GL_UNSIGNED_BYTE, image.ptr());
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, image.cols, image.rows, 0, GL_BGR, GL_UNSIGNED_BYTE, image.ptr());
 	glGenerateMipmap(GL_TEXTURE_2D);
 	
 }
